@@ -26,6 +26,7 @@ endpoint '/api/v1/connectors/add', ['GET'], public_endpoint: true do
   client_name = "plugintest"
   keystore_password = SecureRandom.hex
 
+  # TODO add this once deployed
   #if File.exists?("keys/#{client_name}.cert")
   #  halt 409
   #end
