@@ -48,3 +48,4 @@ cat >> config/clients.yml <<EOF
 EOF
 
 cp "$CLIENT_CERT" keys/clients/${CLIENT_ID}.cert
+echo $CLIENT_ID
