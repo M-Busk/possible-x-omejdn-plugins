@@ -21,15 +21,12 @@ rescue StandardError => e
 end
 
 endpoint '/api/v1/connectors/add', ['GET'], public_endpoint: true do
-  # json = JSON.parse request.body.read
-  
-  client_name = "plugintest"
-  keystore_password = SecureRandom.hex
+  client_name = SecureRandom.uuid
+  keystore_password = SecureRandom.base64(24)
 
-  # TODO add this once deployed
-  #if File.exists?("keys/#{client_name}.cert")
-  #  halt 409
-  #end
+  if File.exists?("keys/#{client_name}.cert")
+    halt 409
+  end
 
   gen_cert_cmd = "./scripts/register_connector.sh #{client_name}"
   gen_cert_cmd_value = `#{gen_cert_cmd}`
@@ -48,7 +45,7 @@ endpoint '/api/v1/connectors/add', ['GET'], public_endpoint: true do
     keystore_file = File.open("#{d}/#{client_name}.cert.pfx", "rb")
     keystore_data = keystore_file.read
     keystore_file.close
-    keystore_encoded = Base64.encode64(keystore_data).gsub(/\n/,"")
+    keystore_encoded = Base64.strict_encode64(keystore_data)
   end
 
   halt 200, JSON.generate({
