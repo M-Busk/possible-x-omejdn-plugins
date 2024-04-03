@@ -32,15 +32,12 @@ endpoint '/api/v1/connectors/add', ['GET'], public_endpoint: true do
   gen_cert_cmd_value = `#{gen_cert_cmd}`
   client_id = gen_cert_cmd_value.strip
 
-  cert_to_pem_cmd_value = ""
-  export_keystore_cmd_value = ""
-
   keystore_encoded = ""
   Dir.mktmpdir do |d|
     cert_to_pem_cmd = "openssl x509 -in keys/#{client_name}.cert -out #{d}/#{client_name}.cert.pem -outform PEM 2>&1"
-    cert_to_pem_cmd_value = `#{cert_to_pem_cmd}`
+    `#{cert_to_pem_cmd}`
     export_keystore_cmd = "openssl pkcs12 --password pass:#{keystore_password} -export -in #{d}/#{client_name}.cert.pem -inkey keys/#{client_name}.key -out #{d}/#{client_name}.cert.pfx 2>&1"
-    export_keystore_cmd_value = `#{export_keystore_cmd}`
+    `#{export_keystore_cmd}`
 
     keystore_file = File.open("#{d}/#{client_name}.cert.pfx", "rb")
     keystore_data = keystore_file.read
