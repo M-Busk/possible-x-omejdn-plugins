@@ -21,12 +21,12 @@ rescue StandardError => e
 end
 
 endpoint '/api/v1/connectors/add', ['GET'], public_endpoint: true do
-  json = JSON.parse request.body.read
 
-  # use client name of body if available
-  if @json['client_name']
+  begin
+    # use client name of body if available
+    json = JSON.parse request.body.read
     client_name = json['client_name']
-  else
+  rescue => e
     client_name = SecureRandom.uuid
   end
 
