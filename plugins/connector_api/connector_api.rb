@@ -35,10 +35,10 @@ endpoint '/api/v1/connectors/add', ['POST'], public_endpoint: true do
 
   client_id = ""
   if File.exists?("keys/#{client_name}.cert") # if cert already exists, read the client id
-    get_ski_cmd = "grep -A1 'Subject Key Identifier' '#{client_name}' | tail -n 1 | tr -d ' '"
+    get_ski_cmd = "grep -A1 'Subject Key Identifier' 'keys/#{client_name}.cert' | tail -n 1 | tr -d ' '"
     ski = `#{get_ski_cmd}`.strip
 
-    get_aki_cmd = "grep -A1 'Authority Key Identifier' '#{client_name}' | tail -n 1 | tr -d ' '"
+    get_aki_cmd = "grep -A1 'Authority Key Identifier' 'keys/#{client_name}.cert' | tail -n 1 | tr -d ' '"
     aki = `#{get_aki_cmd}`.strip
     client_id = "#{ski}:#{aki}"
   else # if cert does not exist, generate one
