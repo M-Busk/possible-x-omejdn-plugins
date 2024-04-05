@@ -20,7 +20,7 @@ rescue StandardError => e
   halt 401
 end
 
-endpoint '/api/v1/connectors/add', ['GET'], public_endpoint: true do
+endpoint '/api/v1/connectors/add', ['POST'], public_endpoint: true do
 
   begin
     # use client name of body if available
