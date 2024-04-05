@@ -25,7 +25,7 @@ endpoint '/api/v1/connectors/add', ['POST'], public_endpoint: true do
   begin
     # use client name of body if available
     json = JSON.parse request.body.read
-    client_name = json['client_name']
+    client_name = json['client_name'].empty? ? SecureRandom.uuid : json['client_name']
   rescue => e
     client_name = SecureRandom.uuid
   end
