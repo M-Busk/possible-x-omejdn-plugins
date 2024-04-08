@@ -66,6 +66,7 @@ endpoint '/api/v1/connectors/add', ['POST'], public_endpoint: true do
     "client_name": client_name,
     "client_id": client_id,
     "keystore": keystore_encoded, 
-    "password": keystore_password
+    "password": keystore_password,
+    "scope": "idsc:IDS_CONNECTOR_ATTRIBUTES_ALL"
   })
 end
