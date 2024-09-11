@@ -47,7 +47,6 @@ jobs:
           images: ${{ env.REGISTRY }}/${{ env.REGISTRY_NAMESPACE }}/omejdn
           tags: |
             type=raw,value=latest,enable=${{ github.ref == 'refs/heads/main'}}
-            type=raw,value=${{env.tag}},enable=${{ github.ref == 'refs/heads/main'}}
             type=raw,value=latest-${{github.ref_name }},enable=${{ github.ref != 'refs/heads/main'}}
             ${{ github.sha }}
       - name: Build and push "management"
@@ -61,3 +60,4 @@ jobs:
           labels: ${{ steps.management-meta.outputs.labels }}
           build-args: |
             ENVIRONMENT=${{ env.environment }}
+
