@@ -41,12 +41,13 @@ jobs:
           echo "tag=$tag" >> $GITHUB_ENV
           echo "environment=dev" >> $GITHUB_ENV
       - name: Docker meta
-        id: meta
+        id: docker-meta-data
         uses: docker/metadata-action@v4
         with:
           images: ${{ env.REGISTRY }}/${{ env.REGISTRY_NAMESPACE }}/omejdn
           tags: |
             type=raw,value=latest,enable=${{ github.ref == 'refs/heads/main'}}
+            type=raw,value=${{env.tag}},enable=${{ github.ref == 'refs/heads/main'}}
             type=raw,value=latest-${{github.ref_name }},enable=${{ github.ref != 'refs/heads/main'}}
             ${{ github.sha }}
       - name: Build and push "management"
@@ -56,7 +57,7 @@ jobs:
           context: .
           file: ./Dockerfile
           push: true
-          tags: ${{ steps.management-meta.outputs.tags }}
+          tags: ${{ steps.docker-meta-data.outputs.tags }}
           labels: ${{ steps.management-meta.outputs.labels }}
           build-args: |
             ENVIRONMENT=${{ env.environment }}
