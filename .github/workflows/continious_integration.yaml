@@ -37,7 +37,7 @@ jobs:
         if: startsWith(github.ref, 'refs/heads/')
         shell: bash {0}
         run: |
-          tag="$(awk -F'"' '/"version": ".+"/{ print $4; exit; }' version)-$(git rev-parse --short HEAD)"
+          tag="$(awk -F'"' '/"version": ".+"/{ print $4; exit; }' version)"
           echo "tag=$tag" >> $GITHUB_ENV
           echo "environment=dev" >> $GITHUB_ENV
       - name: Docker meta
