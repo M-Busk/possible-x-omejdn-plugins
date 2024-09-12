@@ -19,4 +19,5 @@ WORKDIR /opt
 COPY . .
 
 EXPOSE 4567
-ENTRYPOINT ["tail", "-f", "/dev/null"]
+
+CMD [ "ruby", "omejdn.rb" ]
