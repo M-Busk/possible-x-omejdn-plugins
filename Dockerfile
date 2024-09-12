@@ -19,5 +19,4 @@ WORKDIR /opt
 COPY . .
 
 EXPOSE 4567
-
-CMD ["tail", "-f", "/dev/null"]
+ENTRYPOINT ["tail", "-f", "/dev/null"]
