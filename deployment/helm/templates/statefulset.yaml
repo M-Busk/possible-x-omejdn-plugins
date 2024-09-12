@@ -24,6 +24,19 @@ spec:
       {{- end }}      
       securityContext:
         {{- toYaml .Values.podSecurityContext | nindent 8 }}
+      initContainers:
+        - name: daps-init-container
+          image: "{{ .Values.image.repository }}:{{ .Values.image.tag | default .Chart.AppVersion }}"
+          command: ["/bin/sh", "-c"]
+          args:
+            - |
+              if ! [ "$(ls -A /pvc_config)" ]; then
+                cp -r /opt/config/* /pvc_config;
+              fi
+          volumeMounts:
+            - name: config
+              mountPath: /pvc_config
+              subPath: config
       containers:        
         - name: daps-server
           workingDir: /opt
