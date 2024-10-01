@@ -23,7 +23,7 @@ ingress:
       secretName: daps-certificate
 persistence:
   enabled: true
-  storageClass: "standard"
+  storageClass: ionos-enterprise-ssd
   accessMode: []
   storageSize: "2Gi"
 env:
