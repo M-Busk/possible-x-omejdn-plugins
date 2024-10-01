@@ -1,0 +1,36 @@
+image:
+  repository: ghcr.io/possible-x/omejdn
+  tag: latest
+imagePullSecrets:
+  - name: github-registry-auth
+ingress:
+  enabled: true
+  annotations:
+    nginx.ingress.kubernetes.io/proxy-body-size: "128m"
+    nginx.ingress.kubernetes.io/ssl-redirect: "true"
+    nginx.ingress.kubernetes.io/force-ssl-redirect: "true"
+    cert-manager.io/cluster-issuer: cluster-issuer-letsencrypt
+    nginx.ingress.kubernetes.io/server-snippet: "location  /auth {\n  rewrite /auth/(.*) /$1  break;\n  proxy_pass         http://daps-daps-server.mvd-001-demo.svc.cluster.local:4567;\n  proxy_set_header Host $host;\n  proxy_redirect     off;\n}\n\nlocation /.well-known {\n    rewrite /\\.well-known/oauth-authorization-server/auth /auth/.well-known/oauth-authorization-server last;\n    rewrite /\\.well-known/openid-configuration/auth       /auth/.well-known/openid-configuration       last;\n    rewrite /\\.well-known/webfinger                       /auth/.well-known/webfinger                  last;\n    rewrite /\\.well-known/jwks.json                       /auth/jwks.json                              last;\n}\n\nlocation /api/v1/connectors {                \n  deny all;\n  return 403;        \n}      \n"
+  className: "nginx"
+  hosts:
+    - host: daps.poc.possible-x.de
+      paths:
+        - path: /
+          pathType: ImplementationSpecific
+  tls:
+    - hosts:
+        - daps.poc.possible-x.de
+      secretName: daps-certificate
+persistence:
+  enabled: true
+  storageClass: ionos-enterprise-ssd
+  accessMode: []
+  storageSize: "2Gi"
+env:
+  OMEJDN_ISSUER: "https://daps.poc.possible-x.de/auth"
+  OMEJDN_FRONT_URL: "https://daps.poc.possible-x.de/auth"
+  OMEJDN_OPENID: true
+  OMEJDN_PLUGINS: "/opt/config/plugins.yml"
+  OMEJDN_ENVIRONMENT: "development"
+  OMEJDN_ACCEPT_AUDIENCE: "idsc:IDS_CONNECTORS_ALL"
+  OMEJDN_DEFAULT_AUDIENCE: "idsc:IDS_CONNECTORS_ALL"

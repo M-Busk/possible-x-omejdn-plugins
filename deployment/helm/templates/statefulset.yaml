@@ -33,10 +33,16 @@ spec:
               if ! [ "$(ls -A /pvc_config)" ]; then
                 cp -r /opt/config/* /pvc_config;
               fi
+              if ! [ "$(ls -A /opt/keys)" ]; then
+                openssl req -x509 -newkey rsa:4096 -keyout /opt/keys/omejdn.key -out /opt/keys/cert.ss.pem -sha256 -days 365 -nodes
+              fi
           volumeMounts:
             - name: config
               mountPath: /pvc_config
               subPath: config
+            - name: config
+              mountPath: /opt/keys
+              subPath: keys
       containers:        
         - name: daps-server
           workingDir: /opt
