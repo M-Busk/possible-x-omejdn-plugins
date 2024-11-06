@@ -40,8 +40,10 @@ endpoint '/api/v1/connectors/add', ['POST'], public_endpoint: true do
     # use client name of body if available
     json = JSON.parse request.body.read
     client_name = json['client_name'].empty? ? SecureRandom.uuid : json['client_name']
+    did = json['did'].empty? ? "" : json['did']
   rescue => e
     client_name = SecureRandom.uuid
+    did = ""
   end
 
   # generate a new password for the keystore
@@ -56,7 +58,7 @@ endpoint '/api/v1/connectors/add', ['POST'], public_endpoint: true do
     aki = `#{get_aki_cmd}`.strip
     client_id = "#{ski}:#{aki}"
   else # if cert does not exist, generate one
-    gen_cert_cmd = "./scripts/register_connector.sh #{client_name}"
+    gen_cert_cmd = "./scripts/register_connector.sh #{client_name} #{did}"
     gen_cert_cmd_value = `#{gen_cert_cmd}`
     client_id = gen_cert_cmd_value.strip
   end
