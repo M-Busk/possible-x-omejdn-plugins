@@ -14,3 +14,4 @@
 
 plugins:
   connector_api:
+  token_user_attributes:
