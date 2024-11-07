@@ -49,19 +49,10 @@ endpoint '/api/v1/connectors/add', ['POST'], public_endpoint: true do
   # generate a new password for the keystore
   keystore_password = SecureRandom.base64(24)
 
-  client_id = ""
-  if File.exists?("keys/#{client_name}.cert") # if cert already exists, read the client id
-    get_ski_cmd = "grep -A1 'Subject Key Identifier' 'keys/#{client_name}.cert' | tail -n 1 | tr -d ' '"
-    ski = `#{get_ski_cmd}`.strip
-
-    get_aki_cmd = "grep -A1 'Authority Key Identifier' 'keys/#{client_name}.cert' | tail -n 1 | tr -d ' '"
-    aki = `#{get_aki_cmd}`.strip
-    client_id = "#{ski}:#{aki}"
-  else # if cert does not exist, generate one
-    gen_cert_cmd = "./scripts/register_connector.sh #{client_name} #{did}"
-    gen_cert_cmd_value = `#{gen_cert_cmd}`
-    client_id = gen_cert_cmd_value.strip
-  end
+  # create certificate/key or load from disk if exists
+  gen_cert_cmd = "./scripts/register_connector.sh #{client_name} #{did}"
+  gen_cert_cmd_value = `#{gen_cert_cmd}`
+  client_id = gen_cert_cmd_value.strip
 
   keystore_encoded = ""
   Dir.mktmpdir do |d| # create temp directory
