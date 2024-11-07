@@ -31,7 +31,7 @@ if [ ! -f $CLIENT_CERT ]; then
     openssl req -newkey rsa:2048 -new -batch -nodes -x509 -days 3650 -text -keyout "keys/${CLIENT_NAME}.key" -out "$CLIENT_CERT"
 fi
 
-# load subject/azthority key identifiers from certificate and build client ID from it
+# load subject/authority key identifiers from certificate and build client ID from it
 SKI="$(grep -A1 "Subject Key Identifier"  "$CLIENT_CERT" | tail -n 1 | tr -d ' ')"
 AKI="$(grep -A1 "Authority Key Identifier"  "$CLIENT_CERT" | tail -n 1 | tr -d ' ')"
 CLIENT_ID="$SKI:$AKI"
