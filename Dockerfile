@@ -14,9 +14,11 @@
 
 FROM ghcr.io/fraunhofer-aisec/omejdn-server:1.7.1
 
-ENV YQ_VERSION="v4.44.3"
-RUN wget -qO /usr/local/bin/yq https://github.com/mikefarah/yq/releases/download/${YQ_VERSION}/yq_linux_amd64 \
- && chmod +x /usr/local/bin/yq
+
+RUN apt update \
+    && apt install -y python3-pip jq \
+    && apt-get clean \
+    && pip3 install yq
 
 WORKDIR /opt
 
