@@ -24,30 +24,30 @@ ATTESTED_DID=$2
 
 CLIENT_SECURITY_PROFILE="idsc:BASE_SECURITY_PROFILE"
 
-CLIENT_CERT="keys/$CLIENT_NAME.cert"
+CLIENT_CERT="keys/${CLIENT_NAME}.cert"
 
 # if no cert exists yet, generate a new key and cert
-if [ ! -f $CLIENT_CERT ]; then
-    openssl req -newkey rsa:2048 -new -batch -nodes -x509 -days 3650 -text -keyout "keys/${CLIENT_NAME}.key" -out "$CLIENT_CERT"
+if [ ! -f ${CLIENT_CERT} ]; then
+    openssl req -newkey rsa:2048 -new -batch -nodes -x509 -days 3650 -text -keyout "keys/${CLIENT_NAME}.key" -out "${CLIENT_CERT}"
 fi
 
 # load subject/authority key identifiers from certificate and build client ID from it
-SKI="$(grep -A1 "Subject Key Identifier"  "$CLIENT_CERT" | tail -n 1 | tr -d ' ')"
-AKI="$(grep -A1 "Authority Key Identifier"  "$CLIENT_CERT" | tail -n 1 | tr -d ' ')"
+SKI="$(grep -A1 "Subject Key Identifier"  "${CLIENT_CERT}" | tail -n 1 | tr -d ' ')"
+AKI="$(grep -A1 "Authority Key Identifier"  "${CLIENT_CERT}" | tail -n 1 | tr -d ' ')"
 CLIENT_ID="$SKI:$AKI"
 
 # calculate sha256 fingerprint of client certificate
-CLIENT_CERT_SHA="$(openssl x509 -in "$CLIENT_CERT" -noout -sha256 -fingerprint | tr '[:upper:]' '[:lower:]' | tr -d : | sed 's/.*=//')"
+CLIENT_CERT_SHA="$(openssl x509 -in "${CLIENT_CERT}" -noout -sha256 -fingerprint | tr '[:upper:]' '[:lower:]' | tr -d : | sed 's/.*=//')"
 
 # remove entry from yaml if it already exists
-yq -i -y 'del(.[] | select(.client_id == "'"$CLIENT_ID"'"))' config/clients.yml
+yq -i -y 'del(.[] | select(.client_id == "'"${CLIENT_ID}"'"))' config/clients.yml
 # if no entries are left, remove the empty list as well
 sed -i '/^\[\]/d' config/clients.yml
 
 # build client entry
 cat >> config/clients.yml <<EOF
-- client_id: $CLIENT_ID
-  client_name: $CLIENT_NAME
+- client_id: ${CLIENT_ID}
+  client_name: ${CLIENT_NAME}
   grant_types: client_credentials
   token_endpoint_auth_method: private_key_jwt
   scope: idsc:IDS_CONNECTOR_ATTRIBUTES_ALL
@@ -55,9 +55,9 @@ cat >> config/clients.yml <<EOF
   - key: idsc
     value: IDS_CONNECTOR_ATTRIBUTES_ALL
   - key: did
-    value: $ATTESTED_DID
+    value: ${ATTESTED_DID}
   - key: securityProfile
-    value: $CLIENT_SECURITY_PROFILE
+    value: ${CLIENT_SECURITY_PROFILE}
   - key: referringConnector
     value: http://${CLIENT_NAME}.demo
   - key: "@type"
@@ -65,12 +65,12 @@ cat >> config/clients.yml <<EOF
   - key: "@context"
     value: https://w3id.org/idsa/contexts/context.jsonld
   - key: transportCertsSha256
-    value: $CLIENT_CERT_SHA
+    value: ${CLIENT_CERT_SHA}
 EOF
 
 # create clients dir if it does not exist yet and store certificate at the correct location
 mkdir -p keys/clients
-cp "$CLIENT_CERT" keys/clients/${CLIENT_ID}.cert
+cp "${CLIENT_CERT}" keys/clients/${CLIENT_ID}.cert
 
 # echo client id for use with plugin
-echo $CLIENT_ID
+echo ${CLIENT_ID}
