@@ -23,7 +23,7 @@ require 'base64'
 require 'tmpdir'
 require 'securerandom'
 
-after '/api/v1/connectors/*' do
+after '/api/v1/connectors*' do
   headers['Content-Type'] = 'application/json'
 end
 
@@ -115,7 +115,6 @@ endpoint '/api/v1/connectors', ['GET'], public_endpoint: true do
     end
   end
 
-  content_type :json
   halt 200, JSON.generate(connector_details)
 end
 
