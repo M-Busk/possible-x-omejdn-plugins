@@ -1,8 +1,9 @@
 # POSSIBLE-X specific plugins for the [Omejdn server](https://github.com/Fraunhofer-AISEC/omejdn-server)
 
 This repository contains plugins that are used within the POSSIBLE-X project to achieve the usage of Omejdn as a DAPS
-authentication server for use with EDC connectors. It is a fork of the [Omejdn Plugins](https://github.com/merlot-education/omejdn-plugins) 
-repository from the MERLOT project and adds the possibility to retrieve and delete certificates.
+authentication server for use with EDC connectors. It is a fork of the MERLOT
+project's [Omejdn plugins](https://github.com/merlot-education/omejdn-plugins)
+repository and adds the possibility to retrieve and delete certificates.
 
 **Warning: The plugins in this repository may contain endpoints that are not secured by any means of authentication.
 These endpoints may be dangerous in production and must never be exposed to the Internet!**
