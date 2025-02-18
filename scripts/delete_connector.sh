@@ -1,6 +1,6 @@
 #!/bin/sh
 
-#  Copyright 2024 Dataport. All rights reserved. Developed as part of the POSSIBLE project.
+#  Copyright 2024-2025 Dataport. All rights reserved. Developed as part of the POSSIBLE project.
 #
 #  Licensed under the Apache License, Version 2.0 (the "License");
 #  you may not use this file except in compliance with the License.
