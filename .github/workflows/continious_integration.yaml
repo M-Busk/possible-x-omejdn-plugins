@@ -21,7 +21,7 @@ on:
 
 env:
   REGISTRY: ghcr.io
-  REGISTRY_NAMESPACE: possible-x
+  REGISTRY_NAMESPACE: Dataport
   K8S_NAMESPACE: ${{ github.ref == 'refs/heads/main' && 'mvd-001-demo' || 'edc-dev' }}
 
 jobs:
