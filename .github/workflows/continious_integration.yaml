@@ -12,7 +12,7 @@
 #  See the License for the specific language governing permissions and
 #  limitations under the License.
 
-name: Build and Deploy EDC to Cluster
+name: Build and Push Omejdn
 
 on:
   push:
@@ -21,7 +21,7 @@ on:
 
 env:
   REGISTRY: ghcr.io
-  REGISTRY_NAMESPACE: Dataport
+  REGISTRY_NAMESPACE: M-Busk
   K8S_NAMESPACE: ${{ github.ref == 'refs/heads/main' && 'mvd-001-demo' || 'edc-dev' }}
 
 jobs:
