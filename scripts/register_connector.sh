@@ -29,7 +29,7 @@ CLIENT_CERT="keys/${CLIENT_NAME}.cert"
 
 # if no cert exists yet, generate a new key and cert
 if [ ! -f ${CLIENT_CERT} ]; then
-    openssl req -newkey rsa:2048 -new -batch -nodes -x509 -days 3650 -text -keyout "keys/${CLIENT_NAME}.key" -out "${CLIENT_CERT}"
+    openssl req -newkey rsa:2048 -new -batch -nodes -x509 -days 3650 -text -keyout "keys/${CLIENT_NAME}.key" -out "${CLIENT_CERT}" -CA keys/omejdn/omejdn.cert -CAkey keys/omejdn/omejdn.key
 fi
 
 # load subject/authority key identifiers from certificate and build client ID from it
